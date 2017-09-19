@@ -15,24 +15,6 @@ function showButtons(){
 	}
 };
 
-/*function animate(){
-	
-	var movePic = $(this).attr("moving-image")
-	var stopPic = $(this).attr("still-image")
-
-	var state = $(this).attr("image-state")
-	if (state == "still"){
-		state = "animated"
-		$(this).attr("src", movePic)
-	}
-
-	if (state == "animated") {
-		state = "still"
-		$(this).attr("src", stopPic)
-	}
-}
-*/
-
 $(document).ready(function(){
 
 	$("button").click(function(event){
@@ -80,6 +62,16 @@ $(document).ready(function(){
 //ask why this has to be under the button click
 			});
 		});
+
+	});
+
+	$("#submit").click(function(event){
+		event.preventDefault();
+		var newFood = $("#input").val().trim();
+		favFoodArray.push(newFood)
+		$("#gifbuts").empty()
+		showButtons()
+
 	});
 //ask why this had to come before show buttons
 });
