@@ -35,7 +35,7 @@ $(document).ready(function(){
 				var stillPic = info[i].images.fixed_height_still.url
 				var e = $("<div>")
 					
-				e.append(rating)
+				e.append(rating + "<br>" + "<br>")
 				im = $("<img src =" + stillPic + ">")
 				im.attr("image-state", "still")
 				im.attr("moving-image",info[i].images.fixed_height.url)
@@ -65,14 +65,65 @@ $(document).ready(function(){
 
 	});
 
-	$("#submit").click(function(event){
+});
+
+
+$("#submit").click(function(event){
 		event.preventDefault();
 		var newFood = $("#input").val().trim();
 		favFoodArray.push(newFood)
 		$("#gifbuts").empty()
 		showButtons()
 
+
+	$("button").click(function(event){
+
+		var fooda = $(this).attr("button-name");
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ fooda + "&api_key=ed0b57bccd724e459067a598f72ea197&limit=10";
+
+		console.log(fooda)
+		$.ajax({
+		url: queryURL,
+		method: "GET"
+		}).done(function(response){
+			console.log(response)
+
+			for (var i = 0; i <response.data.length; i++){
+				var info = response.data
+				var rating = info[i].rating
+				var stillPic = info[i].images.fixed_height_still.url
+				var e = $("<div>")
+					
+				e.append(rating + "<br>" + "<br>")
+				im = $("<img src =" + stillPic + ">")
+				im.attr("image-state", "still")
+				im.attr("moving-image",info[i].images.fixed_height.url)
+				im.attr("still-image",info[i].images.fixed_height_still.url)
+				e.append(im)
+				$("#gifInfo").prepend(e)
+			};
+
+			$("img").click(function(event){
+
+				var movePic = $(this).attr("moving-image")
+				var stopPic = $(this).attr("still-image")
+				var state = $(this).attr("image-state")
+				
+				if (state === "still"){
+					$(this).attr("image-state", "animated")
+					$(this).attr("src", movePic)
+				}
+
+				if (state === "animated"){
+					$(this).attr("image-state", "still")
+					$(this).attr("src", stopPic)
+				}
+//ask why this has to be under the button click
+			});
+		});
+
 	});
-//ask why this had to come before show buttons
+
 });
+//ask why this had to come before show buttons
 showButtons();
