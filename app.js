@@ -34,9 +34,11 @@ $(document).ready(function(){
 				var rating = info[i].rating
 				var stillPic = info[i].images.fixed_height_still.url
 				var imag = $("<div>")
+				var p = $("<p>")
 				imag.addClass("pics")
+				p.append("Rating: " + rating)
 
-				imag.prepend("Rating: " + rating)
+				imag.prepend(p)
 				im = $("<img src =" + stillPic + ">")
 				im.attr("image-state", "still")
 				im.attr("moving-image",info[i].images.fixed_height.url)
@@ -72,6 +74,7 @@ $(document).ready(function(){
 $("#submit").click(function(event){
 		event.preventDefault();
 		var newchar = $("#input").val().trim();
+		$("#input").val("")
 		gameOfThronesChar.push(newchar)
 		$("#gifbuts").empty()
 
@@ -90,19 +93,23 @@ $("#submit").click(function(event){
 		}).done(function(response){
 			console.log(response)
 
+			
 			for (var i = 0; i <response.data.length; i++){
 				var info = response.data
 				var rating = info[i].rating
 				var stillPic = info[i].images.fixed_height_still.url
-				var e = $("<div>")
-					
-				e.append("Rating: " + rating)
+				var imag = $("<div>")
+				var p = $("<p>")
+				imag.addClass("pics")
+				p.append("Rating: " + rating)
+
+				imag.prepend(p)
 				im = $("<img src =" + stillPic + ">")
 				im.attr("image-state", "still")
 				im.attr("moving-image",info[i].images.fixed_height.url)
 				im.attr("still-image",info[i].images.fixed_height_still.url)
-				e.append(im)
-				$("#gifInfo").prepend(e)
+				imag.append(im)
+				$("#gifInfo").prepend(imag)
 			};
 
 			$("img").click(function(event){
@@ -126,5 +133,9 @@ $("#submit").click(function(event){
 	});
 
 });
+
 //ask why this had to come before show buttons
+
 showButtons();
+
+
