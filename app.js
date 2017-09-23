@@ -1,28 +1,28 @@
 
-
-var favFoodArray = ["pizza", "chocolate cake", "sushi", "lemon pepper wings"];
+var gameOfThronesChar = ["Tyrion Lannister", "The Night King" ,"Daenerys", "Jon Snow", "Cersei", "Arya Stark", "Jamie Lannister"];
 
 function showButtons(){
 
-	for (var i = 0; i < favFoodArray.length; i++){
+	for (var i = 0; i < gameOfThronesChar.length; i++){
 		
-		var food = favFoodArray[i];
-		var foodBut = $("<button>" + food + "</button>");
+		var char = gameOfThronesChar[i];
+		var charBut = $("<button>" + char + "</button>");
 
-		foodBut.addClass("faveFoods")
-		foodBut.attr("button-name", food)
-		$("#gifbuts").append(foodBut)
+		charBut.addClass("favechars")
+		charBut.attr("button-name", char)
+		$("#gifbuts").append(charBut)
+
 	}
 };
 
 $(document).ready(function(){
 
 	$("button").click(function(event){
+		$("#gifInfo").empty()
+		var charU = $(this).attr("button-name");
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ charU + "&api_key=ed0b57bccd724e459067a598f72ea197&limit=10";
 
-		var fooda = $(this).attr("button-name");
-		var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ fooda + "&api_key=ed0b57bccd724e459067a598f72ea197&limit=10";
-
-		console.log(fooda)
+		console.log(charU)
 		$.ajax({
 		url: queryURL,
 		method: "GET"
@@ -33,15 +33,16 @@ $(document).ready(function(){
 				var info = response.data
 				var rating = info[i].rating
 				var stillPic = info[i].images.fixed_height_still.url
-				var e = $("<div>")
-					
-				e.append(rating + "<br>" + "<br>")
+				var imag = $("<div>")
+				imag.addClass("pics")
+
+				imag.prepend("Rating: " + rating)
 				im = $("<img src =" + stillPic + ">")
 				im.attr("image-state", "still")
 				im.attr("moving-image",info[i].images.fixed_height.url)
 				im.attr("still-image",info[i].images.fixed_height_still.url)
-				e.append(im)
-				$("#gifInfo").prepend(e)
+				imag.append(im)
+				$("#gifInfo").prepend(imag)
 			};
 
 			$("img").click(function(event){
@@ -70,18 +71,19 @@ $(document).ready(function(){
 
 $("#submit").click(function(event){
 		event.preventDefault();
-		var newFood = $("#input").val().trim();
-		favFoodArray.push(newFood)
+		var newchar = $("#input").val().trim();
+		gameOfThronesChar.push(newchar)
 		$("#gifbuts").empty()
+
 		showButtons()
 
 
 	$("button").click(function(event){
+		$("#gifInfo").empty()
+		var charU = $(this).attr("button-name");
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ charU + "&api_key=ed0b57bccd724e459067a598f72ea197&limit=10";
 
-		var fooda = $(this).attr("button-name");
-		var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ fooda + "&api_key=ed0b57bccd724e459067a598f72ea197&limit=10";
-
-		console.log(fooda)
+		console.log(charU)
 		$.ajax({
 		url: queryURL,
 		method: "GET"
@@ -94,7 +96,7 @@ $("#submit").click(function(event){
 				var stillPic = info[i].images.fixed_height_still.url
 				var e = $("<div>")
 					
-				e.append(rating + "<br>" + "<br>")
+				e.append("Rating: " + rating)
 				im = $("<img src =" + stillPic + ">")
 				im.attr("image-state", "still")
 				im.attr("moving-image",info[i].images.fixed_height.url)
@@ -118,7 +120,6 @@ $("#submit").click(function(event){
 					$(this).attr("image-state", "still")
 					$(this).attr("src", stopPic)
 				}
-//ask why this has to be under the button click
 			});
 		});
 
